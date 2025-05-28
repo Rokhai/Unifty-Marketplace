@@ -11,16 +11,30 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, Store } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+        role: ['admin', 'customer', 'vendor'],
     },
+    {
+        title: 'Market',
+        href: '/market',
+        icon: Store,
+        role: 'customer',
+    },
+    {
+        title: 'My Store',
+        href: '/my-store',
+        icon: Store,
+        role: 'vendor',
+    }
 ];
 
 const rightNavItems: NavItem[] = [
@@ -29,11 +43,11 @@ const rightNavItems: NavItem[] = [
         href: 'https://github.com/laravel/react-starter-kit',
         icon: Folder,
     },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits#react',
+    //     icon: BookOpen,
+    // },
 ];
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -45,7 +59,19 @@ interface AppHeaderProps {
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
+    const user = auth.user; // Get the user object from auth
     const getInitials = useInitials();
+
+    // Helper to check role
+    const hasRole = (role: string | string[]) => {
+        if (!user?.role) return false;
+        if (Array.isArray(role)) {
+            return role.some(r => user.role && user.role.includes(r));
+        }
+        return user.role.includes(role);
+    };
+
+
     return (
         <>
             <div className="border-sidebar-border/80 border-b">
@@ -102,24 +128,27 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
                         <NavigationMenu className="flex h-full items-stretch">
                             <NavigationMenuList className="flex h-full items-stretch space-x-2">
-                                {mainNavItems.map((item, index) => (
-                                    <NavigationMenuItem key={index} className="relative flex h-full items-center">
-                                        <Link
-                                            href={item.href}
-                                            className={cn(
-                                                navigationMenuTriggerStyle(),
-                                                page.url === item.href && activeItemStyles,
-                                                'h-9 cursor-pointer px-3',
+                                {mainNavItems
+                                    .filter(item => !item.role || hasRole(item.role))
+                                    .map((item, index) => (
+                                        <NavigationMenuItem key={index} className="relative flex h-full items-center">
+                                            {/* Only show if the user has the required role */}
+                                            <Link
+                                                href={item.href}
+                                                className={cn(
+                                                    navigationMenuTriggerStyle(),
+                                                    page.url === item.href && activeItemStyles,
+                                                    'h-9 cursor-pointer px-3',
+                                                )}
+                                            >
+                                                {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
+                                                {item.title}
+                                            </Link>
+                                            {page.url === item.href && (
+                                                <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                             )}
-                                        >
-                                            {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
-                                            {item.title}
-                                        </Link>
-                                        {page.url === item.href && (
-                                            <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
-                                        )}
-                                    </NavigationMenuItem>
-                                ))}
+                                        </NavigationMenuItem>
+                                    ))}
                             </NavigationMenuList>
                         </NavigationMenu>
                     </div>
