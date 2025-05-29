@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Assign the 'admin' role to the user
-        $user->assignRole(Role::findByName('vendor'));
+        $user->assignRole(Role::findByName('admin'));
 
     }
 }
