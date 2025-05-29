@@ -15,6 +15,7 @@ import { BookOpen, Folder, LayoutGrid, Menu, Search, Store } from 'lucide-react'
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
+import { role } from '@/lib/role';
 
 const mainNavItems: NavItem[] = [
     {
@@ -59,17 +60,17 @@ interface AppHeaderProps {
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
-    const user = auth.user; // Get the user object from auth
+    // const user = auth.user; // Get the user object from auth
     const getInitials = useInitials();
 
     // Helper to check role
-    const hasRole = (role: string | string[]) => {
-        if (!user?.role) return false;
-        if (Array.isArray(role)) {
-            return role.some(r => user.role && user.role.includes(r));
-        }
-        return user.role.includes(role);
-    };
+    // const hasRole = (role: string | string[]) => {
+    //     if (!user?.role) return false;
+    //     if (Array.isArray(role)) {
+    //         return role.some(r => user.role && user.role.includes(r));
+    //     }
+    //     return user.role.includes(role);
+    // };
 
 
     return (
@@ -92,7 +93,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
-                                            {mainNavItems.map((item) => (
+                                            {mainNavItems
+                                            .filter(item => !item.role || role(item.role))    
+                                            .map((item) => (
                                                 <Link key={item.title} href={item.href} className="flex items-center space-x-2 font-medium">
                                                     {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
                                                     <span>{item.title}</span>
@@ -101,7 +104,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                         </div>
 
                                         <div className="flex flex-col space-y-4">
-                                            {rightNavItems.map((item) => (
+                                            {rightNavItems
+                                            .filter(item => !item.role || role(item.role))
+                                            .map((item) => (
                                                 <a
                                                     key={item.title}
                                                     href={item.href}
@@ -129,7 +134,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         <NavigationMenu className="flex h-full items-stretch">
                             <NavigationMenuList className="flex h-full items-stretch space-x-2">
                                 {mainNavItems
-                                    .filter(item => !item.role || hasRole(item.role))
+                                    .filter(item => !item.role || role(item.role))
                                     .map((item, index) => (
                                         <NavigationMenuItem key={index} className="relative flex h-full items-center">
                                             {/* Only show if the user has the required role */}

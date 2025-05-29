@@ -9,11 +9,22 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
 type RegisterForm = {
     name: string;
     email: string;
     password: string;
     password_confirmation: string;
+    account_type: string;
 };
 
 export default function Register() {
@@ -22,6 +33,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        account_type: 'customer', // Default account type
     });
 
     const submit: FormEventHandler = (e) => {
@@ -99,6 +111,28 @@ export default function Register() {
                             placeholder="Confirm password"
                         />
                         <InputError message={errors.password_confirmation} />
+                    </div>
+
+                    <div className='grid gap-2'>
+                        <Label>Account type</Label>
+                        <Select
+                            value={data.account_type}
+                            onValueChange={(value) => setData('account_type', value)}
+                            disabled={processing}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select account type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Account type</SelectLabel>
+                                    <SelectItem value="customer">Customer</SelectItem>
+                                    <SelectItem value="vendor">Vendor</SelectItem>
+
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        <InputError message={errors.account_type} />
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>

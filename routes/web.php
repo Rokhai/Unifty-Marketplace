@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     Route::get('market', [\App\Http\Controllers\MarketController::class, 'create'])
+        ->middleware('role:customer') // Only allow customers
         ->name('market');
 });
 

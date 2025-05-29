@@ -13,6 +13,8 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use Spatie\Permission\Models\Role;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -34,7 +36,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required|in:2,3', // 2 for vendor, 3 for customer
+            'account_type' => 'required|in:vendor,customer', // 2 for vendor, 3 for customer
         ]);
 
         
@@ -46,7 +48,9 @@ class RegisteredUserController extends Controller
         ]);
 
         // Assign roles to the user
-        $user->assignRole($request->role);
+        $user->assignRole(Role::findByName($request->account_type));
+
+        // $user->syncRoles([$request->role]);
 
         event(new Registered($user));
 

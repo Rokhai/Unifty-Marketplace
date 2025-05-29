@@ -40,6 +40,6 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-    role?: string; // role of the user, e.g., 'admin', 'user', etc.
+    // role?: string | string; // role of the user, e.g., 'admin', 'user', etc.
     [key: string]: unknown; // This allows for additional properties...
 }
