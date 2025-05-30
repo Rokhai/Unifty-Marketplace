@@ -35,6 +35,12 @@ const mainNavItems: NavItem[] = [
         href: '/my-store',
         icon: Store,
         role: 'vendor',
+    },
+    {
+        title: 'Users',
+        href: '/users',
+        icon: Folder,
+        role: 'admin',
     }
 ];
 
@@ -60,17 +66,7 @@ interface AppHeaderProps {
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
-    // const user = auth.user; // Get the user object from auth
     const getInitials = useInitials();
-
-    // Helper to check role
-    // const hasRole = (role: string | string[]) => {
-    //     if (!user?.role) return false;
-    //     if (Array.isArray(role)) {
-    //         return role.some(r => user.role && user.role.includes(r));
-    //     }
-    //     return user.role.includes(role);
-    // };
 
 
     return (
