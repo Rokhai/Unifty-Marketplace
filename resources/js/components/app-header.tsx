@@ -41,6 +41,11 @@ const mainNavItems: NavItem[] = [
         href: '/users',
         icon: Folder,
         role: 'admin',
+    },
+    {
+        title: 'Roles',
+        href: '/roles',
+        role: 'admin'
     }
 ];
 

@@ -22,6 +22,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class)
         ->middleware('role:admin') // Only allow admins
         ->names('users');
+
+    // Role management routes
+    Route::resource('roles', \App\Http\Controllers\RoleController::class)
+        ->middleware('role:admin') // Only allow admins
+        ->names('roles');
 });
 
 require __DIR__.'/settings.php';
