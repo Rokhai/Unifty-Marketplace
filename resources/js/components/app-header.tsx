@@ -22,13 +22,13 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        role: ['admin', 'customer', 'vendor'],
+        role: ['admin', 'consumer', 'vendor'],
     },
     {
         title: 'Market',
         href: '/market',
         icon: Store,
-        role: 'customer',
+        role: 'consumer',
     },
     {
         title: 'My Store',

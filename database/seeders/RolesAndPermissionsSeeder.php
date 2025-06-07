@@ -17,7 +17,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create Role
         $adminRole = Role::create(['name' => 'admin']);
         $vendorRole = Role::create(['name' => 'vendor']);
-        $customerRole = Role::create(['name' => 'customer']);
+        $consumerRole = Role::create(['name' => 'consumer']);
 
 
         // Create Permissions
@@ -53,7 +53,7 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // Customer Role Permissions
-        $customerRole->givePermissionTo([
+        $consumerRole->givePermissionTo([
             $viewProducts,
             $placeOrders,
             $viewOrderHistory,

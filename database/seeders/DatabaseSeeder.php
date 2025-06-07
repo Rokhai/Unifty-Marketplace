@@ -27,6 +27,37 @@ class DatabaseSeeder extends Seeder
 
         // Assign the 'admin' role to the user
         $user->assignRole(Role::findByName('admin'));
+        $user->assignRole(Role::findByName('vendor'));
+        // $user->assignRole(Role::findByName('customer'));
+
+        // $user->syncRoles([
+        //     Role::findByName('admin'),
+        //     Role::findByName('vendor'),
+        //     Role::findByName('customer'),
+        // ]);
+
+        // dd($user);
+
+        $user1 = User::factory()->create([
+            'name' => 'Customer1',
+            'email' => 'customer1@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user1->assignRole(Role::findByName('consumer'));
+
+        $user2 = User::factory()->create([
+            'name' => 'Vendor1',
+            'email' => 'vendor1@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user2->assignRole(Role::findByName('vendor'));
+
+        $user3 = User::factory()->create([
+            'name' => 'Customer2',
+            'email' => 'customer2@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user3->assignRole(Role::findByName('consumer'));
 
     }
 }

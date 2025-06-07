@@ -36,10 +36,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'account_type' => 'required|in:vendor,customer', // 2 for vendor, 3 for customer
         ]);
-
-        
 
         $user = User::create([
             'name' => $request->name,
@@ -47,11 +44,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Assign roles to the user
-        $user->assignRole(Role::findByName($request->account_type));
+        // Assign default roles for new user
+        $user->assignRole(Role::findByName("consumer"));
 
-        // $user->syncRoles([$request->role]);
-
+        
         event(new Registered($user));
 
         Auth::login($user);
