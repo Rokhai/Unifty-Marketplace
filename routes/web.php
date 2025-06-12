@@ -27,6 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('roles', \App\Http\Controllers\RoleController::class)
         ->middleware('role:admin') // Only allow admins
         ->names('roles');
+
+    // Product management routes
+    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)
+        ->middleware(['role:admin']) // Only allow admins
+        ->names('products');
 });
 
 require __DIR__.'/settings.php';
