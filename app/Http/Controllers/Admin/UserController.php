@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
@@ -25,7 +26,7 @@ class UserController extends Controller
             return redirect()->route('users.index', ['page' => 1]); // Redirect to page 1
         }
 
-        return Inertia::render('Users/Index', [
+        return Inertia::render('Admin/Users/Index', [
             'users' => $users, // Paginated users with links
             'roles' => $roles,
         ]);
@@ -84,7 +85,7 @@ class UserController extends Controller
     {
         // Find the user by ID and return the edit view with user data
         $user = User::findOrFail($id);
-        return Inertia::render('Users/Edit', [
+        return Inertia::render('Admin/Users/Edit', [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
