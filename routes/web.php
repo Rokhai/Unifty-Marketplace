@@ -14,6 +14,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Home page route
+    Route::get('home', [\App\Http\Controllers\HomeController::class, 'index'])
+        ->name('home');
+
     Route::get('market', [\App\Http\Controllers\MarketController::class, 'create'])
         ->middleware('role:consumer') // Only allow consumers
         ->name('market');
