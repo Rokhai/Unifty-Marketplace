@@ -46,6 +46,14 @@ export const columns = ({ setDeletedId, setEditProduct, setViewedProduct }: {
         {
             accessorKey: "name",
             header: "Name",
+            cell: ({ row }) => {
+                const name = row.getValue("name");
+                return (
+                    <span className="font-medium">
+                        {name.length > 20 ? `${name.slice(0, 20)}...` : name}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "stock",
