@@ -30,18 +30,24 @@ const mainNavItems: NavItem[] = [
         icon: House,
         role: ['admin', 'consumer', 'vendor'],
     },
+    // {
+    //     title: 'Market',
+    //     href: '/market',
+    //     icon: Store,
+    //     role: 'consumer',
+    // },
     {
-        title: 'Market',
-        href: '/market',
-        icon: Store,
-        role: 'consumer',
-    },
-    {
-        title: 'My Store',
-        href: '/my-store',
+        title: 'My Products',
+        href: '/vendor/products',
         icon: Store,
         role: 'vendor',
     },
+    // {
+    //     title: 'My Store',
+    //     href: '/my-store',
+    //     icon: Store,
+    //     role: 'vendor',
+    // },
     {
         title: 'Users',
         href: '/users',
