@@ -62,6 +62,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Products',
         href: '/products/admin',
+        role: 'admin',
     }
 ];
 
