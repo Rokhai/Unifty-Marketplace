@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Button } from '@/components/ui/button';
@@ -63,6 +63,11 @@ type HomeProps = {
 export default function Home({ products }: HomeProps) {
     console.log('Products:', products);
 
+    const handleShowProduct = (id: number) => {
+        // Navigate to the product details page
+        router.get(route('products.show', id));
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title='Home' />
@@ -92,7 +97,7 @@ export default function Home({ products }: HomeProps) {
 
                             </div>
                             <div>
-                                <Button>
+                                <Button onClick={() => handleShowProduct(product.id)} variant='outline' className='flex items-center gap-2'>
                                     {/* <ShoppingCart className="mr-2" /> */}
                                     View Details
                                 </Button>

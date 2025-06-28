@@ -73,6 +73,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     ->middleware(['role:admin']) // Only allow admins
     //     ->names('products');
 
+    // Consumer routes
+    Route::get('products/{id}', [\App\Http\Controllers\Consumer\ProductController::class, 'show'])
+        ->name('products.show');
 
 
 });

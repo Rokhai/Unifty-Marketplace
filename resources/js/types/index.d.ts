@@ -43,3 +43,17 @@ export interface User {
     // role?: string | string; // role of the user, e.g., 'admin', 'user', etc.
     [key: string]: unknown; // This allows for additional properties...
 }
+
+// This interface represents a product in the marketplace.
+export interface Product {
+    id: number;
+    name: string;
+    image: string;
+    stock: number;
+    price: number;
+    description: string;
+    category_id: number;
+    category_name: string;
+    is_active: boolean;
+    is_approved: boolean;
+}
