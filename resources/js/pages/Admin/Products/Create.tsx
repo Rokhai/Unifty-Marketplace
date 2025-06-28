@@ -57,7 +57,7 @@ export default function Create({ categories, isDialogOpen, setDialogOpen }: Crea
     const submitProduct: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('products.store'), {
+        post(route('products.admin.store'), {
             forceFormData: true, // Use FormData to handle file uploads
             onSuccess: () => {
                 reset('name', 'image', 'stock', 'price', 'description', 'category_id', 'is_active'); // Reset form fields

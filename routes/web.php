@@ -8,7 +8,7 @@ use App\Http\Controllers\MyStoreController;
 // Admin Controllers
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 Route::get('/', function () {
@@ -37,8 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->names('roles');
 
         // Product management routes
-        Route::resource('products', ProductController::class)
-            ->names('products');
+        Route::resource('products/admin', AdminProductController::class)
+            ->names('products.admin');
     });
 
     // Consumer routes
@@ -73,11 +73,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     ->middleware(['role:admin']) // Only allow admins
     //     ->names('products');
 
-
-
-    Route::get('market', [\App\Http\Controllers\MarketController::class, 'create'])
-        ->middleware('role:consumer') // Only allow consumers
-        ->name('market');
 
 
 });

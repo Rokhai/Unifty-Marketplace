@@ -61,7 +61,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Products',
-        href: '/products',
+        href: '/products/admin',
     }
 ];
 

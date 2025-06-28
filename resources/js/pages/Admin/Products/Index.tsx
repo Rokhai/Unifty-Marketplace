@@ -55,7 +55,7 @@ export default function Index({ products, categories }: IndexProps) {
     };
 
     const handleDelete = (productId: number) => {
-        router.delete(route('products.destroy', productId));
+        router.delete(route('products.admin.destroy', productId));
     };
 
     return (

@@ -81,7 +81,7 @@ export default function Edit({ product, categories, isDialogOpen, setDialogOpen 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         if (!product) return;
-        put(route("products.update", product.id), {
+        put(route("products.admin.update", product.id), {
             onSuccess: () => {
                 reset('name', 'image', 'stock', 'price', 'description', 'category_id', 'is_active', 'is_approved');
                 setImagePreview(null); // Reset image preview

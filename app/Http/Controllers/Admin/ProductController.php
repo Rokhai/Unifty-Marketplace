@@ -73,7 +73,7 @@ class ProductController extends Controller
             'is_approved' => false, // Default to false
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('products.admin.index')->with('success', 'Product created successfully.');
     }
 
     /**
@@ -95,7 +95,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, string $id)
     {
         //
         $validated = $request->validate([
@@ -109,6 +109,8 @@ class ProductController extends Controller
             'is_approved' => 'boolean',
 
         ]);
+
+        $product = Product::findOrFail($id); // Find the product by ID
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
@@ -127,17 +129,17 @@ class ProductController extends Controller
         ];
 
         // Update the product
-        Product::where('id', $product->id)->update($updatedProduct);
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        Product::where('id', $id)->update($updatedProduct);
+        return redirect()->route('products.admin.index')->with('success', 'Product updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(string $id)
     {
         // Delete the product
-        Product::find($product->id)->delete();
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        Product::find($id)->delete();
+        return redirect()->route('products.admin.index')->with('success', 'Product deleted successfully.');
     }
 }
