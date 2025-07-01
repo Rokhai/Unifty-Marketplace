@@ -1,0 +1,2 @@
+# Unifty Marketplace
+University Thrifty Marketplace is an exclusive e-commerce that operates as an online platform where buyers and sellers connect to trade secondhand goods like i.e P.E. Uniform, making it in digital space. This model leverages e-commerce technology to facilitate transactions, manage listings, etc. Furthermore, allowing users to browse, buy, and sell used items online, often with integrated payment and shipping solutions

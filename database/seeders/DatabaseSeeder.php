@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call(RolesAndPermissionsSeeder::class);
+      
 
         $user = User::factory()->create([
             'name' => 'Rokhai',
@@ -58,6 +59,14 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         $user3->assignRole(Role::findByName('consumer'));
+        $user4 = User::factory()->create([
+            'name' => 'Rolex',
+            'email' => 'rolex@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user4->assignRole(Role::findByName('admin'));
 
+        $this->call(CategorySeeder::class);
+        $this->call(ProductSeeder::class);
     }
 }
