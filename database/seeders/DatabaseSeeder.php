@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         // Assign the 'admin' role to the user
         $user->assignRole(Role::findByName('admin'));
         $user->assignRole(Role::findByName('vendor'));
-        // $user->assignRole(Role::findByName('customer'));
+        $user->assignRole(Role::findByName('consumer'));
 
         // $user->syncRoles([
         //     Role::findByName('admin'),
@@ -68,5 +68,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(CartSeeder::class);
     }
 }

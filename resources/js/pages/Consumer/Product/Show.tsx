@@ -1,5 +1,5 @@
 import AppLayout from "@/layouts/app-layout";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import { type BreadcrumbItem } from "@/types";
 
 import { Button } from "@/components/ui/button";
@@ -17,14 +17,49 @@ const breadcrumbs: BreadcrumbItem[] = [
 import { Product } from "@/types";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 type ShowProps = {
     product: Product;
 }
 
 export default function Show({ product }: ShowProps) {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        product_id: product.id,
+        quantity: 1,
+    });
+
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value, 10);
+        if (!isNaN(value)) {
+            if (value < 1) {
+                setData('quantity', 1);
+            }
+            else if (value > product.stock) {
+                setData('quantity', product.stock);
+            }
+            else {
+                setData('quantity', value);
+            }
+        }
+    }
+
+    const handleAddToCart = () => {
+        post(route('cart.store'), {
+            onSuccess: () => {
+                toast.success('Product added to cart successfully.', {
+                    duration: 3000,
+                    position: 'top-right',
+                });
+                reset('quantity');
+                console.log('Toast len:', toast.length);
+            }
+        });
+    }
+
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={product.name} />
             <div className="mt-4">
                 <Button variant={'link'} onClick={() => router.get(route('home'))}>
@@ -60,17 +95,25 @@ export default function Show({ product }: ShowProps) {
                         <div className="flex items-center">
                             <Label className="text-muted-foreground">Quantity</Label>
                             <div className="mx-5 flex ">
-                                <Button variant={'outline'} className="rounded-none">
+                                <Button variant={'outline'} className="rounded-none"
+                                    onClick={() => {
+                                        if (data.quantity > 1) {
+                                            setData('quantity', data.quantity - 1);
+                                        }
+                                    }}
+                                    disabled={data.quantity <= 1}
+                                >
                                     <span className="text-sm">-</span>
                                 </Button>
                                 <Input
                                     name="quantity"
                                     type="number"
-                                    defaultValue={1}
-                                    
+                                    value={data.quantity}
+                                    onChange={handleQuantityChange}
+                                    disabled={product.stock <= 0}
                                     min={1}
                                     max={product.stock > 0 ? product.stock : 1}
-                                    className="w-16 text-center bg-neutral-950 rounded-none
+                                    className="w-16 text-center  rounded-none
                                     [-moz-appearance:_textfield] 
                                     [&::-webkit-inner-spin-button]:m-0 
                                     [&::-webkit-inner-spin-button]:appearance-none 
@@ -78,7 +121,14 @@ export default function Show({ product }: ShowProps) {
                                     [&::-webkit-outer-spin-button]:appearance-none
                                 "
                                 />
-                                <Button variant={'outline'} className="rounded-none">
+                                <Button variant={'outline'} className="rounded-none"
+                                    onClick={() => {
+                                        if (product.stock > 0) {
+                                            setData('quantity', data.quantity + 1);
+                                        }
+                                    }}
+                                    disabled={product.stock <= 0 || data.quantity >= product.stock}
+                                >
                                     <span className="text-sm">+</span>
                                 </Button>
                             </div>
@@ -89,19 +139,12 @@ export default function Show({ product }: ShowProps) {
                         </div>
                         <div>
                             <div>
-                                <Button className="w-1/4 h-12">
+                                <Button className="w-1/4 h-12" onClick={handleAddToCart} disabled={product.stock <= 0 || processing}>
                                     <ShoppingCart className="mr-2" />
                                     <span className="text-sm  capitalize">Add to Cart</span>
                                 </Button>
                             </div>
                         </div>
-
-                        {/* <div className="mt-4 flex justify-end">
-                            <Button>
-                                <ShoppingCart className="mr-2" />
-                                <span className="text-sm">Add to Cart</span>
-                            </Button>
-                        </div> */}
                     </div>
                 </div>
 
@@ -127,13 +170,13 @@ export default function Show({ product }: ShowProps) {
                         <span>Arayat, Pampanga</span>
 
                     </div>
-
                 </div>
                 <div>
                     <h2 className="text-lg font-semibold bg-zinc-100/2 p-4 rounded-md">Product Description</h2>
                     <p className="text-sm text-muted-foreground p-4">{product.description}</p>
                 </div>
             </section>
+            <Toaster />
         </AppLayout>
     )
 }

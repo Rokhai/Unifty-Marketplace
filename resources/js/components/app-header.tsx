@@ -11,7 +11,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search, Store, House } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, Store, House, ShoppingCart } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -48,6 +48,12 @@ const mainNavItems: NavItem[] = [
     //     icon: Store,
     //     role: 'vendor',
     // },
+    {
+        title: 'My Cart',
+        href: '/cart',
+        icon: ShoppingCart,
+        role: 'consumer',
+    },
     {
         title: 'Users',
         href: '/users',

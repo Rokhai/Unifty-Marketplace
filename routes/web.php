@@ -76,6 +76,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Consumer routes
     Route::get('products/{id}', [\App\Http\Controllers\Consumer\ProductController::class, 'show'])
         ->name('products.show');
+    
+    Route::middleware(['role:consumer'])->group(function () {
+        Route::resource('cart', \App\Http\Controllers\Consumer\CartController::class)
+            ->names('cart');
+    });
 
 
 });

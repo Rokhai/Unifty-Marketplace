@@ -28,14 +28,14 @@ class ProductSeeder extends Seeder
             ],
             [
                 "user_id" => 1,
-                "name" => "Yugi Muto Crochet Doll",
-                "image" => "products/yugi.jpg",
+                "name" => "Adobo",
+                "image" => "products/adobo.jpg",
                 "stock" => 10,
                 "price" => 250.00,
                 "description" => "A handmade crochet doll of Yugi Muto from Yu-Gi-Oh! Perfect for fans and collectors.",
                 "category_id" => 2,
-                "is_active" => false,
-                "is_approved" => false,
+                "is_active" => true,
+                "is_approved" => true,
 
             ],
             [
@@ -51,7 +51,7 @@ class ProductSeeder extends Seeder
 
             ],
             [
-                "user_id" => 1,
+                "user_id" => 3,
                 "name" => "Yugi Muto Crochet Doll",
                 "image" => "products/yugi.jpg",
                 "stock" => 10,
