@@ -36,6 +36,7 @@ type UpdateProductForm = {
     description?: string;
     category_id?: number;
     is_active?: boolean;
+    _method?: string; // For PUT requests
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -48,37 +49,56 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Edit({ product, categories }: EditProps) {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-    const { data, setData, put, processing, errors, reset } = useForm<UpdateProductForm>({
-        name: '',
+    const { data, setData, post, processing, errors, reset } = useForm<UpdateProductForm>({
+        name: product.name || '',
         image: null, // File type for image
-        stock: 0,
-        price: 0,
-        description: '',
-        category_id: 0,
-        is_active: true,
+        stock: product.stock || 0,
+        price: product.price || 0,
+        description: product.description || '',
+        category_id: product.category_id || 0, // always string for FormData
+        is_active: product.is_active || false,
+        // _method: 'PUT', // For PUT requests
+        _method: 'PATCH', // Use PATCH for partial updates
     });
 
-    useEffect(() => {
-        if (product) {
-            setData({
-                name: product.name ?? '',
-                image: null,
-                stock: product.stock ?? 0,
-                price: product.price ?? 0,
-                description: product.description ?? '',
-                category_id: product.category_id ?? 0, // always string for FormData
-                is_active: !!product.is_active,
-            });
+    // useEffect(() => {
+    //     if (product) {
+    //         setData({
+    //             name: product.name ?? '',
+    //             image: null,
+    //             stock: product.stock ?? 0,
+    //             price: product.price ?? 0,
+    //             description: product.description ?? '',
+    //             category_id: product.category_id ?? 0, // always string for FormData
+    //             is_active: !!product.is_active,
+    //         });
 
-        }
-    }, [product]);
+    //     }
+    // }, [product]);
 
+    // const handleSubmit: FormEventHandler = (e) => {
+    //     e.preventDefault();
+    //     if (!product) return;
+    //     put(route("vendor.products.update", product.id), {
+    //         forceFormData: true,
+    //         onSuccess: () => {
+    //             reset('name', 'image', 'stock', 'price', 'description', 'category_id', 'is_active');
+    //             setImagePreview(null); // Reset image preview
+    //         },
+    //         onError: () => {
+    //             console.error("Failed to update product:", errors);
+    //         }
+            
+    //     });
+    // };
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         if (!product) return;
-        put(route("vendor.products.update", product.id), {
+
+        post(route("vendor.products.update", product.id), {
+            forceFormData: true, // Use FormData to handle file uploads
             onSuccess: () => {
-                reset('name', 'image', 'stock', 'price', 'description', 'category_id', 'is_active', 'is_approved');
+                reset('name', 'image', 'stock', 'price', 'description', 'category_id', 'is_active');
                 setImagePreview(null); // Reset image preview
             },
             onError: () => {
@@ -135,16 +155,17 @@ export default function Edit({ product, categories }: EditProps) {
                                 ) : product?.image ? (
                                     <img src={`/storage/${product.image}`} alt={product.image} className="mb-2 rounded border" style={{ height: '620px', objectFit: 'cover' }} />
                                 ) : null}
-                                {/* <Input
+                                <Input
                                     id='image'
                                     type='file'
                                     name='image'
+                                    autoComplete="image"
                                     accept='image/*'
                                     onChange={handleImageChange}
                                     disabled={processing}
                                     placeholder='Upload product image'
-                                /> */}
-                                {/* <InputError message={errors.image} className="mt-2" /> */}
+                                />
+                                <InputError message={errors.image} className="mt-2" />
                             </div>
                         </div>
                         <div className="gap-4  w-full  flex flex-col">
